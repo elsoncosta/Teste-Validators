@@ -22,7 +22,11 @@ namespace ApiValidators
 
         private static async Task<bool> IdExists(int id)
         {
-            Thread.Sleep(10000);
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine("Aguarde mais 1 segundo.");
+                Thread.Sleep(10000);
+            }
             Console.WriteLine("passou async");
             return id.Equals(1) ? true : false;
         }
