@@ -1,9 +1,17 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 
 namespace ApiValidators
 {
-	public class PessoaValidator : ManualAbstractValidator<Pessoa>
+	public class PessoaValidator : AbstractValidator<Pessoa>
     {
+        public bool _InvalidarValidacao;
+        protected override bool PreValidate(ValidationContext<Pessoa> context, ValidationResult result)
+        {
+            Console.WriteLine($"Deve execultar: {_InvalidarValidacao}");
+            return _InvalidarValidacao;
+        }
+
         public PessoaValidator()
 		{
             RuleFor(x => x.Id).NotNull();
@@ -28,8 +36,7 @@ namespace ApiValidators
                 Thread.Sleep(10000);
             }
             Console.WriteLine("passou async");
-            return id.Equals(1) ? true : false;
+            return id.Equals(1);
         }
     }
 }
-

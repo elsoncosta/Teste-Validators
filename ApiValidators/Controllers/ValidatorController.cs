@@ -9,36 +9,46 @@ namespace ApiValidators.Controllers;
 [Route("[controller]")]
 public class ValidatorController : ControllerBase
 {
-    readonly IValidator<Pessoa> _validator;
+    readonly PessoaValidator _validator;
     readonly IValidator<Endereco> _validationsEndereco;
 
-    public ValidatorController(IValidator<Pessoa> validations, IValidator<Endereco> validationsEndereco)
+    public ValidatorController(PessoaValidator validations, IValidator<Endereco> validationsEndereco)
     {
         _validator = validations;
         _validationsEndereco = validationsEndereco;
     }
 
-    [HttpPost("/automatico")]
-    public async Task<IActionResult> PostAutomatico(Pessoa model)
+    /// <summary>
+    /// Automático com validador ativado para manual
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost("/automaticoHabilitado")]
+    public async Task<IActionResult> PostAutomaticoHabilitado(Pessoa model)
     {
-        // ValidationResult validation = await _validator.ValidateAsync(model);
-        // if (!validation.IsValid)
-        // {
-        //     return BadRequest(validation.Errors);
-        // }
-        return Ok();
-    }
-
-    [HttpPost("/manual")]
-    public async Task<IActionResult> PostManual(Endereco model)
-    {
-        ValidationResult validation = await _validationsEndereco.ValidateAsync(model);
-
+        _validator._InvalidarValidacao = true;
+        ValidationResult validation = await _validator.ValidateAsync(model);
         if (!validation.IsValid)
         {
             return BadRequest(validation.Errors);
         }
         return Ok();
     }
-}
 
+    /// <summary>
+    /// Automático com validador ativado
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost("/Desabilitado")]
+    public async Task<IActionResult> PostAutomaticoDesabilitado(Pessoa model)
+    {
+        return Ok();
+    }
+
+    [HttpPost("/automatico")]
+    public async Task<IActionResult> PostAutomatico(Endereco model)
+    {
+        return Ok();
+    }
+}

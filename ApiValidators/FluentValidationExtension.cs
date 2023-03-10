@@ -9,13 +9,10 @@ namespace ApiValidators
         {
             services.AddFluentValidation(conf =>
             {
-                // conf.RegisterValidatorsFromAssemblyContaining(typeof(EnderecoValidator));
                 services.AddValidatorsFromAssemblyContaining<PessoaValidator>();
+                services.AddValidatorsFromAssemblyContaining<EnderecoValidator>();
                 conf.AutomaticValidationEnabled = true;
             });
-
-            // services.AddValidatorsFromAssemblyContaining<PessoaValidator>();
-            services.AddValidatorsFromAssemblyContaining<EnderecoValidator>();
 
             return services;
         }
